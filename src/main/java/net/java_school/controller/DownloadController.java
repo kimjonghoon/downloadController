@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +18,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -27,7 +28,7 @@ public class DownloadController {
 	private static final String FILE_DIR = "./files/";
 
 	@GetMapping("/download/{filename:.+}")
-	public ResponseEntity<InputStreamResource> downloadFile1(@PathVariable String filename, HttpServletRequest req) throws IOException {
+	public ResponseEntity<InputStreamResource> downloadFile1(@PathVariable(name="filename") String filename, HttpServletRequest req) throws IOException {
 
 		File file = new File(FILE_DIR + filename);
 
@@ -47,7 +48,7 @@ public class DownloadController {
 	}
 
 	@PostMapping("/download")
-	public void download(String filename, HttpServletRequest req, HttpServletResponse resp) {
+	public void download(@RequestParam(name="filename") String filename, HttpServletRequest req, HttpServletResponse resp) {
 		OutputStream outputStream = null;
 
 		try {
@@ -94,5 +95,4 @@ public class DownloadController {
 			}
 		}
 	}
-
 }
